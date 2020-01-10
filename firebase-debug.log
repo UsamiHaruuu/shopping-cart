@@ -1,0 +1,55 @@
+[debug] [2020-01-10T06:55:01.792Z] ----------------------------------------------------------------------
+[debug] [2020-01-10T06:55:01.795Z] Command:       D:\NodeJs\node.exe D:\NodeJs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2020-01-10T06:55:01.795Z] CLI Version:   7.11.0
+[debug] [2020-01-10T06:55:01.795Z] Platform:      win32
+[debug] [2020-01-10T06:55:01.795Z] Node Version:  v12.14.0
+[debug] [2020-01-10T06:55:01.796Z] Time:          Fri Jan 10 2020 00:55:01 GMT-0600 (Central Standard Time)
+[debug] [2020-01-10T06:55:01.796Z] ----------------------------------------------------------------------
+[debug] [2020-01-10T06:55:01.796Z] 
+[debug] [2020-01-10T06:55:01.808Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-01-10T06:55:01.809Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\Northwestern\394\learn-react\shopping-cart
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project.
+[debug] [2020-01-10T06:55:58.540Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-01-10T06:55:58.541Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-01-10T06:55:58.730Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-10T06:55:58.791Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects  
+
+[debug] [2020-01-10T06:55:59.182Z] <<< HTTP RESPONSE 409
+[debug] [2020-01-10T06:55:59.182Z] <<< HTTP RESPONSE BODY
+[debug] [2020-01-10T06:55:59.185Z] HTTP Error: 409, Requested entity already exists
+[debug] [2020-01-10T06:55:59.359Z] FirebaseError: HTTP Error: 409, Requested entity already exists
+    at module.exports (D:\NodeJs\node_modules\firebase-tools\lib\responseToError.js:38:12)
+    at Request._callback (D:\NodeJs\node_modules\firebase-tools\lib\api.js:39:35)
+    at Request.self.callback (D:\NodeJs\node_modules\firebase-tools\node_modules\request\request.js:185:22)
+    at Request.emit (events.js:210:5)
+    at Request.EventEmitter.emit (domain.js:475:20)
+    at Request.<anonymous> (D:\NodeJs\node_modules\firebase-tools\node_modules\request\request.js:1161:10)
+    at Request.emit (events.js:210:5)
+    at Request.EventEmitter.emit (domain.js:475:20)
+    at IncomingMessage.<anonymous> (D:\NodeJs\node_modules\firebase-tools\node_modules\request\request.js:1083:12)
+    at Object.onceWrapper (events.js:299:28)
+    at IncomingMessage.emit (events.js:215:7)
+    at IncomingMessage.EventEmitter.emit (domain.js:475:20)
+    at endReadableNT (_stream_readable.js:1184:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+[error] 
+[error] Error: Failed to create Google Cloud project. See firebase-debug.log for more info.
