@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import rbx from "rbx/index"
-import { Message, List, Container, Button, Input, Box, Column, Delete, Field, Content } from "rbx";
-
+import { Message, List, Container, Button, Icon, Box, Column, Field, Content, Dropdown } from "rbx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {HighestToLowest, LowestToHighest,OldestToNewest } from './sortingProducts'
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
@@ -9,7 +10,6 @@ const getURL = (key) => { return "data/static/products/" + key + "_1.jpg"; }
 const sizes = ["XS", "S", "M", "ML", "L", "XL", "XXL"];
 const Col = ({ products }) => {
     const num = products.length;
-    console.log(num);
     var column = Array.from({ length: num / 4 + 1 }, (_, i) => i);
     return (
         column.map(n => (
@@ -23,59 +23,64 @@ const Col = ({ products }) => {
     )
 }
 const leftColumn = (index) => {
-    console.log("hi")
     if (index === 0)
         return (
-            <Container align = "center" >
+            <Container align="center" >
                 <Content><strong>Select Size</strong></Content>
-                <Button.Group align = "center">{sizeList()}</Button.Group>
+                <Button.Group align="center">{sizeList()}</Button.Group>
                 <Content>Useful Links Below</Content>
-                <a href = "https://google.com">google</a>
-                <div/>
-                <a href = "https://stackoverflow.com">stackoverflow</a>
+                <a href="https://google.com">google</a>
+                <div />
+                <a href="https://stackoverflow.com">stackoverflow</a>
             </Container>
 
         )
 }
-const sizeList = () =>{
-    return(
-        sizes.map(size=>(
-            <Button outlined color = "primary" size = "normal">{size}</Button>
+const sizeList = () => {
+    return (
+        sizes.map(size => (
+            <Button outlined color="primary" size="normal">{size}</Button>
         ))
     )
 }
-const price = (price) =>{
-    
-    return(
+const price = (price) => {
+
+    return (
         <Field><strong>$ </strong>{price}</Field>
     )
 }
+const ShippingDetail = (product) => (
+    product.isFreeShipping ? "Free Shipping!" : null
+)
 const ListOfItem = (products, n) => {
     return (
         products.map((product, index) => {
             if (index % 4 === n)
                 return (
                     <List align="center" width="120" hight="200" key={product.sku}>
-                        <div>
-                            <img src={getURL(product.sku)}
+                        <Container badge={ShippingDetail(product)}>
+                            <img src={getURL(product.sku) }
                                 height="10"
                             ></img>
-                        </div>
+                        </Container>
                         <Field>{
                             price(product.price)
                         }</Field>
                         <Button size="small" rounded color="warning"> <strong>{product.title}</strong></Button>
-                        <Button Focused size = "medium" color = "dark"> Add to Shopping Cart</Button>
+                        <Button Focused size="medium" color="dark"> Add to Shopping Cart</Button>
                     </List>
                 );
         })
     )
 }
+
 const ShoppingList = ({ products }) => {
     return (
-        <Column.Group>
-            <Col products={products}></Col>
-        </Column.Group>
+        <Container>
+            <Column.Group>
+                <Col products={products}></Col>
+            </Column.Group>
+        </Container>
     )
 }
 
