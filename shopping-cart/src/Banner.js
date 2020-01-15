@@ -4,7 +4,8 @@ import { Navbar, Button, Message, Container } from 'rbx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import CartView from './CartView'
-const Banner = () => {
+const Banner = ({carts}) => {
+    console.log(carts)
     return (
         <Container>
             <Navbar height="auto">
@@ -44,7 +45,7 @@ const Banner = () => {
                                     <strong>Sign up</strong>
                                 </Button>
                                 <Button color="light">Log in</Button>
-                                <CartView></CartView>
+                                <CartView items ={carts} ></CartView>
                             </Button.Group>
                         </Navbar.Item>
                     </Navbar.Segment>

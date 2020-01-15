@@ -1,106 +1,150 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import {Button, Container} from 'rbx';
-import List from '@material-ui/core/List';
+import { Button, Container, Message, Image, Content, Card, Column, List, Title } from 'rbx';
+//import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { db, addItem, deleteItem,updatingItemNumbers } from './firebaseHelpers'
+import { getURL } from "./shoppingList"
 //import MailIcon from '@material-ui/icons/Mail';
 //https://material-ui.com/components/drawers/#swipeable-temporary-drawer
 const useStyles = makeStyles({
-    list: {
-      width: 250,
-    },
-    fullList: {
-      width: 'auto',
-    },
+  list: {
+    width: 'auto',
+  },
+  fullList: {
+    width: 'auto',
+  },
+});
+const EachItem = ({ item }) => {
+  console.log(item.name)
+  return (
+    <Column.Group backgroundColor='primary'>
+      <Column size="three-quarters">
+        <Container>
+          <Container>
+            <Title>{item.name}</Title>
+          </Container>
+          <Column.Group>
+            <Column>
+              <Container>
+                <Image.Container size ='3by4'>
+                  <Image rounded src={getURL(item.id)} />
+                </Image.Container>
+              </Container>
+            </Column>
+            <Column align = 'center'>
+              <div>
+                Item's Size 
+              </div>
+              <div>
+              {item.style}
+              </div>
+              <div>
+                {item.description===""? "No description" :item.description}
+              </div>
+              <div>
+                Quantity: {item.num}
+              </div>
+            </Column>
+          </Column.Group>
+        </Container>
+      </Column>
+      <Column>
+        <List>
+          <List.Item as="button">
+            <FontAwesomeIcon icon={faMinus} />
+          </List.Item>
+          <List.Item>
+            <strong>$</strong>
+            {(item.price*item.num).toFixed(2)}
+          </List.Item>
+          <List.Item>
+            <Button.Group>
+              <Button onClick={()=>updatingItemNumbers(db,item,-1)}>-</Button>
+              <Button onClick={()=>updatingItemNumbers(db,item,1)}>+</Button>
+            </Button.Group>
+          </List.Item>
+        </List>
+      </Column>
+    </Column.Group>
+  )
+}
+
+const ItemsInCart = ({ items }) => {
+  console.log(items)
+  return (
+    <List>
+      {items.map(item => {
+        console.log(item.num)
+        return (
+          <List.Item>
+            <EachItem item={item}></EachItem>
+          </List.Item>)
+      })}
+    </List>
+  )
+}
+const Subtotal = ({ items }) => {
+    let total = items.map(item=>(item.price*item.num))
+                     .reduce((a,b)=>(a+b))
+    console.log(total)
+  return (
+    <Container>
+      <div><strong>total price :</strong></div>
+      {(total).toFixed(2)}
+      <button>check out button</button>
+    </Container>
+  )
+}
+const CartView = ({ items }) => {
+  console.log(items)
+  const classes = useStyles();
+  const [state, setState] = useState({
+    right: false,
   });
-  
-const CartView = () => {
-    const classes = useStyles();
-    const [state, setState] = useState({
-      right: false,
-    });
-  
-    const toggleDrawer = (side, open) => event => {
-      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-      }
-  
-      setState({ ...state, [side]: open });
-    };
-  
-    const sideList = side => (
-      <div
+
+  const toggleDrawer = (open) => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ right: open });
+  };
+
+  const sideList = (side, items) => {
+    return (
+      <Container align='center'
         className={classes.list}
         role="presentation"
-        onClick={toggleDrawer(side, false)}
-        onKeyDown={toggleDrawer(side, false)}
+        onClick={toggleDrawer({ side }, false)}
+        onKeyDown={toggleDrawer({ side }, false)}
       >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <Image.Container size={128}>
+          <Image src="https://cdn0.iconfinder.com/data/icons/shopping-cart-26/1000/Shopping-Basket-03-512.png" />
+        </Image.Container>
+        <Button badge={items.length} as="Content">Cart</Button>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-  
-    const fullList = side => (
-      <div
-        className={classes.fullList}
-        role="presentation"
-        onClick={toggleDrawer(side, false)}
-        onKeyDown={toggleDrawer(side, false)}
-      >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <ItemsInCart items={items}></ItemsInCart>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-  
-    return (
-      <div>
-        <Button onClick={toggleDrawer('right', true)} badge = '12' badgeColor = 'warning' color = "primary">
-        <FontAwesomeIcon icon = {faShoppingCart}></FontAwesomeIcon>
-        </Button>
-        <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
-          {sideList('left')}
-        </Drawer>
-        <Drawer anchor="top" open={state.top} onClose={toggleDrawer('top', false)}>
-          {fullList('top')}
-        </Drawer>
-        <Drawer anchor="bottom" open={state.bottom} onClose={toggleDrawer('bottom', false)}>
-          {fullList('bottom')}
-        </Drawer>
-        <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
-          {sideList('right')}
-        </Drawer>
-      </div>
-    );
-  }
+        <Subtotal items={items}></Subtotal>
+      </Container>
+    )
+  };
+
+  return (
+    <div>
+      <Button onClick={toggleDrawer(true)} badge={items.length} badgeColor='warning' color="primary">
+        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+      </Button>
+      <Drawer anchor="right" open={state.right} onClose={toggleDrawer(false)}>
+        {sideList('right', items)}
+      </Drawer>
+    </div>
+  );
+}
 export default CartView;

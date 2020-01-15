@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import rbx from "rbx/index"
 import { Message, List, Container, Button, Icon, Box, Column, Field, Content, Dropdown } from "rbx";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {HighestToLowest, LowestToHighest,OldestToNewest } from './sortingProducts'
+import { addItem } from "./firebaseHelpers"
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
@@ -23,6 +22,7 @@ const Col = ({ products }) => {
     )
 }
 const leftColumn = (index) => {
+
     if (index === 0)
         return (
             <Container align="center" >
@@ -44,9 +44,8 @@ const sizeList = () => {
     )
 }
 const price = (price) => {
-
     return (
-        <Field><strong>$ </strong>{price}</Field>
+        <Field><strong>$ </strong>{price.toFixed(2)}</Field>
     )
 }
 const ShippingDetail = (product) => (
@@ -59,7 +58,7 @@ const ListOfItem = (products, n) => {
                 return (
                     <List align="center" width="120" hight="200" key={product.sku}>
                         <Container badge={ShippingDetail(product)}>
-                            <img src={getURL(product.sku) }
+                            <img alt="" src={getURL(product.sku)}
                                 height="10"
                             ></img>
                         </Container>
@@ -67,7 +66,7 @@ const ListOfItem = (products, n) => {
                             price(product.price)
                         }</Field>
                         <Button size="small" rounded color="warning"> <strong>{product.title}</strong></Button>
-                        <Button Focused size="medium" color="dark"> Add to Shopping Cart</Button>
+                        <Button Focused size="medium" color="dark" onClick={() => addItem(product)}> Add to Shopping Cart</Button>
                     </List>
                 );
         })
@@ -84,4 +83,4 @@ const ShoppingList = ({ products }) => {
     )
 }
 
-export default ShoppingList
+export  {ShoppingList, getURL}

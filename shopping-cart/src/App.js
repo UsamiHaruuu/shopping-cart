@@ -1,70 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import ShoppingList from './shoppingList'
+import {ShoppingList} from './shoppingList'
 import Banner from './Banner'
 import { db } from "./firebaseHelpers";
-import { Sort } from "./Sort"
-import { Message, List, Container, Button, Icon, Box, Column, Field, Content, Dropdown } from "rbx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons'
+import { Message, List, Container, Button, Icon, Box, Column, Field, Content, Dropdown } from "rbx";
+import 'firebase/database'
 //import {HighestToLowest, LowestToHighest,OldestToNewest } from './sortingProducts'
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
-
-//  const LowestToHighest =  (products) => {
-//   if(products)
-//   products.sort(function(a,b){
-//       return a.price-b.price;
-//   })
-// }
-
-// const HighestToLowest = async (products) => {
-//   if(products)
-//     products.sort(function(a,b) {
-//       return b.price-a.price;
-//   })
-// }
-// const OldestToNewest =  (products) => {
-//   if(products)
-//    return products.reverse();
-// }
-
-//three order state: 0,1,2,3
-const createCartList = cartList => {
-  Object.values(cartList.items).filter(item => item.active);
-}
 function json2array(json) {
   var result = [];
   var keys = Object.keys(json);
-  keys.forEach(function (key) {
+  keys.forEach(key => {
     result.push(json[key]);
   });
   return result;
 }
+
+const createItemsList = (data) => {
+  return Object.values(data.products);
+}
+const createCartList = (data) => {
+  return Object.values(data.carts);
+}
 const App = () => {
   const [order, setOrder] = useState("Newest to Oldest");
-  const [cart, setCart] = useState();
-  const [data, setData] = useState({});
+  const [carts, setCarts] = useState([]);
+  const [data, setData] = useState([]);
   const products = Object.values(data);
-  const handleData = snap => {
-    if (snap.val()) {
-      setCart(createCartList(snap.val()));
+  useEffect(() => {
+    const handleData = snap => {
+      if (snap.val().products) {
+        //const array = json2array(snap.val().products)
+        setData(createItemsList(snap.val()));
+        // console.log(Object.values(snap.val().carts));
+        // console.log(carts);
+      }
+      if(snap.val().carts){
+        setCarts(createCartList(snap.val()));
+      }
+
     }
-  }
+    db.on('value', handleData, error => alert(error));
+    return () => { db.off('value', handleData) };
+  }, []);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch("./data/products.json");
-      if (!response.ok) return;
-      const json = await response.json();
-      const array = json2array(json);
-      setData(array);
-    };
-    fetchProducts();
-  },[]);
-  useEffect(() => {
-    console.log("change state")
+    console.log(order)
     if (order === "Lowest to Highest") {
-      data.sort(function (a, b) {
+      data.sort((a, b) => {
         return b.price - a.price;
       })
     }
@@ -73,14 +60,11 @@ const App = () => {
         return a.price - b.price;
       })
     };
-  },[order]);
-  useEffect(() => {
-    db.on('value', handleData, error => alert(error));
-    return () => { db.off('value', handleData) };
-  }, []);
+    setData(data)
+  }, [order]);
   return (
     <React.Fragment>
-      <Banner />
+      <Banner carts={carts} />
       <Container style={{ height: '80px' }} align="right">
         <Dropdown>
           <Container>
@@ -89,7 +73,7 @@ const App = () => {
               <Button>
                 <span>{order}</span>
                 <Icon size="small">
-                  <FontAwesomeIcon icon="abacus" />
+                  <FontAwesomeIcon icon={faArrowCircleDown} />
                 </Icon>
               </Button>
             </Dropdown.Trigger>
