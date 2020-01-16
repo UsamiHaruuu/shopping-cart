@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import {ShoppingList} from './shoppingList'
+import { ShoppingList } from './shoppingList'
 import Banner from './Banner'
 import { db } from "./firebaseHelpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons'
-import { Message, List, Container, Button, Icon, Box, Column, Field, Content, Dropdown } from "rbx";
+import { Container, Button, Icon, Dropdown } from "rbx";
 import 'firebase/database'
-//import {HighestToLowest, LowestToHighest,OldestToNewest } from './sortingProducts'
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
@@ -16,40 +15,41 @@ const createItemsList = (data) => {
   return Object.values(data.products);
 }
 const createCartList = (data) => {
-  return Object.values(data.carts).filter(data=>(data.active===true));
+  return Object.values(data.carts).filter(data => (data.active === true));
 }
 const App = () => {
   const [order, setOrder] = useState("Newest to Oldest");
   const [carts, setCarts] = useState([]);
   const [data, setData] = useState([]);
-  const products = Object.values(data);
   useEffect(() => {
     const handleData = snap => {
       if (snap.val().products) {
         setData(createItemsList(snap.val()));
       }
-      if(snap.val().carts){
+      if (snap.val().carts) {
         setCarts(createCartList(snap.val()));
       }
 
     }
     db.on('value', handleData, error => alert(error));
     return () => { db.off('value', handleData) };
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (order === "Lowest to Highest") {
       data.sort((a, b) => {
         return b.price - a.price;
       })
+      setData(data)
     }
     if (order === "Highest to Lowest") {
       data.sort(function (a, b) {
         return a.price - b.price;
       })
+      setData(data)
     };
-    setData(data)
-  }, [order]);
+
+  }, [order, data]);
   return (
     <React.Fragment>
       <Banner carts={carts} />
@@ -77,7 +77,7 @@ const App = () => {
         </Dropdown>
       </Container>
       <ShoppingList
-        products={products} carts = {carts}>
+        products={data} carts={carts}>
       </ShoppingList>
     </React.Fragment>
   )

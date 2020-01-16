@@ -1,4 +1,3 @@
-import React, { PureComponent } from 'react'
 const LowestToHighest =  (products) => {
     if(products)
     products.sort(function(a,b){

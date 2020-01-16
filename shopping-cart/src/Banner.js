@@ -1,11 +1,8 @@
 import React from 'react';
 import "rbx/index.css";
-import { Navbar, Button, Message, Container } from 'rbx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { Navbar, Button, Container } from 'rbx';
 import CartView from './CartView'
 const Banner = ({carts}) => {
-    console.log(carts)
     return (
         <Container>
             <Navbar height="auto">

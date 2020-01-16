@@ -1,7 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import firebaseConfig from './Config.js';
-const getURL = (key) => { return "data/static/products/" + key + "_1.jpg"; }
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref();
 

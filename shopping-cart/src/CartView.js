@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import { Button, Container, Message, Image, Content, Card, Column, List, Title } from 'rbx';
+import { Button, Container, Image, Column, List, Title } from 'rbx';
 //import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faMinus } from '@fortawesome/free-solid-svg-icons'
-import { db, addItem, deleteItem, updatingItemNumbers } from './firebaseHelpers'
+import { db, deleteItem, updatingItemNumbers } from './firebaseHelpers'
 import { getURL } from "./shoppingList"
 //import MailIcon from '@material-ui/icons/Mail';
 //https://material-ui.com/components/drawers/#swipeable-temporary-drawer
@@ -55,7 +53,7 @@ const EachItem = ({ item }) => {
       </Column>
       <Column>
         <List>
-          <List.Item as="button" onClick = {()=>deleteItem(item)}>
+          <List.Item as="button" onClick={() => deleteItem(item)}>
             <FontAwesomeIcon icon={faMinus} />
           </List.Item>
           <List.Item>
@@ -89,8 +87,8 @@ const ItemsInCart = ({ items }) => {
 const Subtotal = ({ items }) => {
   let total = 0;
   if (items) {
-       total = items.map(item => (item.price * item.num))
-      .reduce((a, b) => (a + b),0)
+    total = items.map(item => (item.price * item.num))
+      .reduce((a, b) => (a + b), 0)
   }
 
 
@@ -99,7 +97,7 @@ const Subtotal = ({ items }) => {
       <div><strong>total price :</strong></div>
       {(total).toFixed(2)}
       <Container>
-      <button>check out button</button>
+        <button>check out button</button>
       </Container>
     </Container>
   )
