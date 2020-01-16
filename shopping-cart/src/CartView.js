@@ -8,7 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faMinus } from '@fortawesome/free-solid-svg-icons'
-import { db, addItem, deleteItem,updatingItemNumbers } from './firebaseHelpers'
+import { db, addItem, deleteItem, updatingItemNumbers } from './firebaseHelpers'
 import { getURL } from "./shoppingList"
 //import MailIcon from '@material-ui/icons/Mail';
 //https://material-ui.com/components/drawers/#swipeable-temporary-drawer
@@ -21,7 +21,6 @@ const useStyles = makeStyles({
   },
 });
 const EachItem = ({ item }) => {
-  console.log(item.name)
   return (
     <Column.Group backgroundColor='primary'>
       <Column size="three-quarters">
@@ -32,20 +31,20 @@ const EachItem = ({ item }) => {
           <Column.Group>
             <Column>
               <Container>
-                <Image.Container size ='3by4'>
+                <Image.Container size='3by4'>
                   <Image rounded src={getURL(item.id)} />
                 </Image.Container>
               </Container>
             </Column>
-            <Column align = 'center'>
+            <Column align='center'>
               <div>
-                Item's Size 
+                Item's Size
               </div>
               <div>
-              {item.style}
+                {item.style}
               </div>
               <div>
-                {item.description===""? "No description" :item.description}
+                {item.description === "" ? "No description" : item.description}
               </div>
               <div>
                 Quantity: {item.num}
@@ -56,17 +55,17 @@ const EachItem = ({ item }) => {
       </Column>
       <Column>
         <List>
-          <List.Item as="button">
+          <List.Item as="button" onClick = {()=>deleteItem(item)}>
             <FontAwesomeIcon icon={faMinus} />
           </List.Item>
           <List.Item>
             <strong>$</strong>
-            {(item.price*item.num).toFixed(2)}
+            {(item.price * item.num).toFixed(2)}
           </List.Item>
           <List.Item>
             <Button.Group>
-              <Button onClick={()=>updatingItemNumbers(db,item,-1)}>-</Button>
-              <Button onClick={()=>updatingItemNumbers(db,item,1)}>+</Button>
+              <Button onClick={() => updatingItemNumbers(db, item, -1)}>-</Button>
+              <Button onClick={() => updatingItemNumbers(db, item, 1)}>+</Button>
             </Button.Group>
           </List.Item>
         </List>
@@ -76,11 +75,9 @@ const EachItem = ({ item }) => {
 }
 
 const ItemsInCart = ({ items }) => {
-  console.log(items)
   return (
     <List>
       {items.map(item => {
-        console.log(item.num)
         return (
           <List.Item>
             <EachItem item={item}></EachItem>
@@ -90,19 +87,24 @@ const ItemsInCart = ({ items }) => {
   )
 }
 const Subtotal = ({ items }) => {
-    let total = items.map(item=>(item.price*item.num))
-                     .reduce((a,b)=>(a+b))
-    console.log(total)
+  let total = 0;
+  if (items) {
+       total = items.map(item => (item.price * item.num))
+      .reduce((a, b) => (a + b),0)
+  }
+
+
   return (
     <Container>
       <div><strong>total price :</strong></div>
       {(total).toFixed(2)}
+      <Container>
       <button>check out button</button>
+      </Container>
     </Container>
   )
 }
 const CartView = ({ items }) => {
-  console.log(items)
   const classes = useStyles();
   const [state, setState] = useState({
     right: false,
@@ -112,7 +114,6 @@ const CartView = ({ items }) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ right: open });
   };
 

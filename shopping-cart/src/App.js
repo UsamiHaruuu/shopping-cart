@@ -11,20 +11,12 @@ import 'firebase/database'
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
-function json2array(json) {
-  var result = [];
-  var keys = Object.keys(json);
-  keys.forEach(key => {
-    result.push(json[key]);
-  });
-  return result;
-}
 
 const createItemsList = (data) => {
   return Object.values(data.products);
 }
 const createCartList = (data) => {
-  return Object.values(data.carts);
+  return Object.values(data.carts).filter(data=>(data.active===true));
 }
 const App = () => {
   const [order, setOrder] = useState("Newest to Oldest");
@@ -34,10 +26,7 @@ const App = () => {
   useEffect(() => {
     const handleData = snap => {
       if (snap.val().products) {
-        //const array = json2array(snap.val().products)
         setData(createItemsList(snap.val()));
-        // console.log(Object.values(snap.val().carts));
-        // console.log(carts);
       }
       if(snap.val().carts){
         setCarts(createCartList(snap.val()));
@@ -46,10 +35,9 @@ const App = () => {
     }
     db.on('value', handleData, error => alert(error));
     return () => { db.off('value', handleData) };
-  }, []);
+  },[]);
 
   useEffect(() => {
-    console.log(order)
     if (order === "Lowest to Highest") {
       data.sort((a, b) => {
         return b.price - a.price;
@@ -89,7 +77,7 @@ const App = () => {
         </Dropdown>
       </Container>
       <ShoppingList
-        products={products}>
+        products={products} carts = {carts}>
       </ShoppingList>
     </React.Fragment>
   )
