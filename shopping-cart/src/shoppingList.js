@@ -14,7 +14,7 @@ const Col = ({ user, carts, products, db, allsize, selected }) => {
             <Column width="100" key={n}>
                 <Container>
                     <LeftColumn index={n} products={products} db={db}></LeftColumn>
-                    <ListOfItem carts={carts} products={products} n={n - 1} allsize={allsize} selected={selected} user = {user} ></ListOfItem>
+                    <ListOfItem carts={carts} products={products} n={n - 1} allsize={allsize} selected={selected} user={user} ></ListOfItem>
                 </Container>
             </Column>
         ))
@@ -46,23 +46,21 @@ const ShippingDetail = (product) => (
     product.isFreeShipping ? "Free Shipping!" : null
 )
 
-const Add = ({user, product, carts}) => {
+const Add = ({ user, product, carts }) => {
     if (user) {
         return (
             <Button Focused size="medium" color="dark"
                 onClick={() => addItem(product, carts)}>
                 Add to Shopping Cart
         </Button>
-        
-    )
-    }else return <React.Fragment/>
+
+        )
+    } else return <React.Fragment />
 }
 const ListOfItem = ({ user, carts, products, n, allsize, selected }) => {
-    let filteredItems = products.filter(product => {
-        return (
-            selected.every(size => product.size.includes(size))
-        )
-    })
+    let filteredItems = products.filter(product => (
+        selected.every(size => product.size.includes(size))
+    ));
     return (
         filteredItems.map((product, index) => {
             if (index % 4 === n)
@@ -77,9 +75,10 @@ const ListOfItem = ({ user, carts, products, n, allsize, selected }) => {
                             price(product.price)
                         }</Field>
                         <Button size="small" rounded color="warning"> <strong>{product.title}</strong></Button>
-                        <Add  user = {user} product = {product} carts = {carts}/>
+                        <Add user={user} product={product} carts={carts} />
                     </List>
                 );
+                else return <div></div>
         })
     )
 }
@@ -131,7 +130,7 @@ const ShoppingList = ({ user, products, carts }) => {
                 </Container>
             </Container>
             <Column.Group>
-                <Col user = {user} products={products} carts={carts} db={db} allsize={allsize} selected={selected}></Col>
+                <Col user={user} products={products} carts={carts} db={db} allsize={allsize} selected={selected}></Col>
             </Column.Group>
         </Container>
     )

@@ -6,7 +6,6 @@ import { db } from "./firebaseHelpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons'
 import { Container, Button, Icon, Dropdown } from "rbx";
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import 'firebase/database'
 import 'firebase/auth';
 import firebase from 'firebase/app'
@@ -26,6 +25,8 @@ const App = () => {
   const [carts, setCarts] = useState([]);
   const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
+  let userCart = user;
+  console.log(data)
   firebase.auth().onAuthStateChanged(setUser);
   useEffect(()=>{
     firebase.auth().onAuthStateChanged(setUser);
@@ -35,7 +36,7 @@ const App = () => {
       if (snap.val().products) {
         setData(createItemsList(snap.val()));
       }
-      if (snap.val().carts) {
+      if (snap.val().userCart) {
         setCarts(createCartList(snap.val()));
       }
 
