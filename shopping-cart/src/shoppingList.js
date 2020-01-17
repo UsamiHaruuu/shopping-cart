@@ -6,7 +6,7 @@ https://shopping-cart-43740.firebaseapp.com/
 */
 const getURL = (key) => { return "data/static/products/" + key + "_1.jpg"; }
 const sizes = ["XS", "S", "M", "ML", "L", "XL", "XXL"];
-const Col = ({ carts, products, db, allsize, selected }) => {
+const Col = ({ user, carts, products, db, allsize, selected }) => {
     const num = products.length;
     var column = Array.from({ length: num / 4 + 1 }, (_, i) => i);
     return (
@@ -14,7 +14,7 @@ const Col = ({ carts, products, db, allsize, selected }) => {
             <Column width="100" key={n}>
                 <Container>
                     <LeftColumn index={n} products={products} db={db}></LeftColumn>
-                    <ListOfItem carts={carts} products={products} n={n - 1} allsize={allsize} selected={selected} ></ListOfItem>
+                    <ListOfItem carts={carts} products={products} n={n - 1} allsize={allsize} selected={selected} user = {user} ></ListOfItem>
                 </Container>
             </Column>
         ))
@@ -46,7 +46,18 @@ const ShippingDetail = (product) => (
     product.isFreeShipping ? "Free Shipping!" : null
 )
 
-const ListOfItem = ({ carts, products, n, allsize, selected }) => {
+const Add = ({user, product, carts}) => {
+    if (user) {
+        return (
+            <Button Focused size="medium" color="dark"
+                onClick={() => addItem(product, carts)}>
+                Add to Shopping Cart
+        </Button>
+        
+    )
+    }else return <React.Fragment/>
+}
+const ListOfItem = ({ user, carts, products, n, allsize, selected }) => {
     let filteredItems = products.filter(product => {
         return (
             selected.every(size => product.size.includes(size))
@@ -66,7 +77,7 @@ const ListOfItem = ({ carts, products, n, allsize, selected }) => {
                             price(product.price)
                         }</Field>
                         <Button size="small" rounded color="warning"> <strong>{product.title}</strong></Button>
-                        <Button Focused size="medium" color="dark" onClick={() => addItem(product, carts)}> Add to Shopping Cart</Button>
+                        <Add  user = {user} product = {product} carts = {carts}/>
                     </List>
                 );
         })
@@ -86,7 +97,7 @@ const useSelection = () => {
 const buttonColor = (size, state) => {
     return state.selected.includes(size) ? 'primary' : null
 }
-const ShoppingList = ({ products, carts }) => {
+const ShoppingList = ({ user, products, carts }) => {
     const [allsize, setAllsize] = useState([])
     const [selected, toggle] = useSelection()
     const sizeHelper = (size) => {
@@ -120,7 +131,7 @@ const ShoppingList = ({ products, carts }) => {
                 </Container>
             </Container>
             <Column.Group>
-                <Col products={products} carts={carts} db={db} allsize={allsize} selected={selected}></Col>
+                <Col user = {user} products={products} carts={carts} db={db} allsize={allsize} selected={selected}></Col>
             </Column.Group>
         </Container>
     )

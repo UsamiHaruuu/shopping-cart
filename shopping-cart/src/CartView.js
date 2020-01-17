@@ -102,7 +102,7 @@ const Subtotal = ({ items }) => {
     </Container>
   )
 }
-const CartView = ({ items }) => {
+const CartView = ({ items, user }) => {
   const classes = useStyles();
   const [state, setState] = useState({
     right: false,
@@ -134,7 +134,7 @@ const CartView = ({ items }) => {
       </Container>
     )
   };
-
+  if(user){
   return (
     <div>
       <Button onClick={toggleDrawer(true)} badge={items.length} badgeColor='warning' color="primary">
@@ -145,5 +145,8 @@ const CartView = ({ items }) => {
       </Drawer>
     </div>
   );
+  }else {
+    return <div>Please Login</div>
+  }
 }
 export default CartView;

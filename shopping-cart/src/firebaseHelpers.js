@@ -1,8 +1,31 @@
+import React from 'react'
 import firebase from 'firebase/app'
 import 'firebase/database'
 import firebaseConfig from './Config.js';
+import 'firebase/auth';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref();
+
+const LogOut = () =>{
+  firebase.auth().signOut()
+}
+const SignUp = () => (
+  <StyledFirebaseAuth
+    uiConfig={uiConfig}
+    firebaseAuth={firebase.auth()}
+  />
+);
+
+const uiConfig = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ],
+  callbacks: {
+    signInSuccessWithAuthResult: () => false
+  }
+};
 
 const addItem = (product, carts) => {
   let item = carts.filter(i => i.id === product.sku);
@@ -28,8 +51,6 @@ const addItem = (product, carts) => {
       .catch(error => alert(error));
   }
 }
-
-
 const deleteItem = item => {
   db.child('carts').child(item.id).update({ active: false })
 }
@@ -41,4 +62,4 @@ const updatingItemNumbers = (db, item, incr) => {
     db.child('carts').child(item.id).update({ active: false })
   }
 }
-export { db, addItem, deleteItem, updatingItemNumbers }
+export { SignUp, LogOut, uiConfig, db, addItem, deleteItem, updatingItemNumbers }

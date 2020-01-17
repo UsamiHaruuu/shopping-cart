@@ -6,10 +6,14 @@ import { db } from "./firebaseHelpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons'
 import { Container, Button, Icon, Dropdown } from "rbx";
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import 'firebase/database'
+import 'firebase/auth';
+import firebase from 'firebase/app'
 /*
 https://shopping-cart-43740.firebaseapp.com/
 */
+
 
 const createItemsList = (data) => {
   return Object.values(data.products);
@@ -21,6 +25,11 @@ const App = () => {
   const [order, setOrder] = useState("Newest to Oldest");
   const [carts, setCarts] = useState([]);
   const [data, setData] = useState([]);
+  const [user, setUser] = useState(null);
+  firebase.auth().onAuthStateChanged(setUser);
+  useEffect(()=>{
+    firebase.auth().onAuthStateChanged(setUser);
+  },[]);
   useEffect(() => {
     const handleData = snap => {
       if (snap.val().products) {
@@ -52,7 +61,8 @@ const App = () => {
   }, [order, data]);
   return (
     <React.Fragment>
-      <Banner carts={carts} />
+      <Banner carts={carts} user = {user} />
+
       <Container style={{ height: '80px' }} align="right">
         <Dropdown>
           <Container>
@@ -77,7 +87,7 @@ const App = () => {
         </Dropdown>
       </Container>
       <ShoppingList
-        products={data} carts={carts}>
+        products={data} carts={carts} user = {user}>
       </ShoppingList>
     </React.Fragment>
   )
