@@ -3,7 +3,7 @@ import "rbx/index.css";
 import { Navbar, Button, Container } from 'rbx';
 import CartView from './CartView'
 import { SignUp, LogOut } from './firebaseHelpers'
-const Banner = ({ carts, user }) => {
+const Banner = ({ carts, user, products }) => {
     return (
         <Container>
             <Navbar height="auto">
@@ -46,7 +46,7 @@ const Banner = ({ carts, user }) => {
                                         </Button></div>
                                         : <SignUp />}
                                 </Button>
-                                <CartView items={carts} user={user} ></CartView>
+                                <CartView items={carts} user={user} products = {products} ></CartView>
                             </Button.Group>
                         </Navbar.Item>
                     </Navbar.Segment>

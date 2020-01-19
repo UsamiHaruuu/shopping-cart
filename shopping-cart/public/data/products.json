@@ -2,12 +2,7 @@
   "12064273040195392": {
     "sku": 12064273040195392,
     "active": true,
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML"
-    ],
+    "size": ["XS", "S", "M", "ML"],
     "inventory": 15,
     "title": "Cat Tee Black T-Shirt",
     "description": "4 MSL",
@@ -19,12 +14,7 @@
   },
   "51498472915966370": {
     "sku": 51498472915966370,
-    "size": [
-      "XS",
-      "S",
-      "XL",
-      "ML"
-    ],
+    "size": ["XS", "S", "XL", "ML"],
     "active": true,
     "inventory": 15,
     "title": "Dark Thug Blue-Navy T-Shirt",
@@ -38,12 +28,7 @@
   "10686354557628304": {
     "sku": 10686354557628304,
     "active": true,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "inventory": 15,
     "title": "Sphynx Tie Dye Wine T-Shirt",
     "description": "GPX Poly 1",
@@ -56,12 +41,7 @@
   "11033926921508488": {
     "sku": 11033926921508488,
     "active": true,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "inventory": 15,
     "title": "Skuul",
     "description": "Training 2014",
@@ -75,13 +55,7 @@
     "sku": 39876704341265610,
     "active": true,
     "inventory": 15,
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML",
-      "XXL"
-    ],
+    "size": ["XS", "S", "M", "ML", "XXL"],
     "title": "Wine Skul T-Shirt",
     "description": "",
     "style": "Wine",
@@ -94,13 +68,7 @@
     "sku": 10412368723880252,
     "active": true,
     "inventory": 15,
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML",
-      "XXL"
-    ],
+    "size": ["XS", "S", "M", "ML", "XXL"],
     "title": "Short Sleeve T-Shirt",
     "description": "",
     "style": "Grey",
@@ -111,12 +79,7 @@
   },
   "8552515751438644": {
     "sku": 8552515751438644,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "active": true,
     "inventory": 15,
     "title": "Cat Tee Black T-Shirt",
@@ -129,12 +92,7 @@
   },
   "18644119330491310": {
     "sku": 18644119330491310,
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML"
-    ],
+    "size": ["XS", "S", "M", "ML"],
     "inventory": 15,
     "active": true,
     "title": "Sphynx Tie Dye Grey T-Shirt",
@@ -150,12 +108,7 @@
     "inventory": 15,
     "active": true,
     "title": "Danger Knife Grey",
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "description": "14/15 unnumbered",
     "style": "White with black stripes",
     "price": 14.9,
@@ -165,12 +118,7 @@
   },
   "876661122392077": {
     "sku": 876661122392077,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "active": true,
     "inventory": 15,
     "title": "White DGK Script Tee",
@@ -186,12 +134,7 @@
     "active": true,
     "title": "Born On The Streets",
     "inventory": 15,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "description": "14/15 unnumbered - Player",
     "style": "White with black stripes",
     "price": 25.9,
@@ -204,12 +147,7 @@
     "active": true,
     "inventory": 15,
     "title": "Tso 3D Short Sleeve T-Shirt A",
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML"
-    ],
+    "size": ["XS", "S", "M", "ML"],
     "description": "14/15 + 1st World T-Shirt",
     "style": "Black",
     "price": 10.9,
@@ -223,12 +161,7 @@
     "inventory": 15,
     "title": "Man Tie Dye Cinza Grey T-Shirt",
     "description": "Goalkeeper 13/14",
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL"
-    ],
+    "size": ["ML", "L", "XL", "XXL"],
     "style": "White",
     "price": 49.9,
     "currencyId": "USD",
@@ -240,13 +173,7 @@
     "active": true,
     "title": "Crazy Monkey Black T-Shirt",
     "inventory": 15,
-    "size": [
-      "XS",
-      "S",
-      "M",
-      "ML",
-      "XS"
-    ],
+    "size": ["XS", "S", "M", "ML", "XS"],
     "description": "1977 Child",
     "style": "Black with white stripes",
     "price": 22.5,
@@ -264,12 +191,7 @@
     "price": 18.7,
     "currencyId": "USD",
     "currencyFormat": "$",
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XS"
-    ],
+    "size": ["ML", "L", "XL", "XS"],
     "isFreeShipping": false
   },
   "11600983276356164": {
@@ -277,13 +199,7 @@
     "inventory": 15,
     "active": true,
     "title": "Crazy Monkey Grey",
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL",
-      "XS"
-    ],
+    "size": ["ML", "L", "XL", "XXL", "XS"],
     "description": "",
     "style": "",
     "price": 134.9,
@@ -295,13 +211,7 @@
     "sku": 27250082398145996,
     "title": "On The Streets Black T-Shirt",
     "inventory": 15,
-    "size": [
-      "ML",
-      "L",
-      "XL",
-      "XXL",
-      "XS"
-    ],
+    "size": ["ML", "L", "XL", "XXL", "XS"],
     "active": true,
     "description": "",
     "style": "",

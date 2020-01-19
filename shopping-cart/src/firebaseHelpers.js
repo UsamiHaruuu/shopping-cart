@@ -1,27 +1,22 @@
-import React from 'react'
-import firebase from 'firebase/app'
-import 'firebase/database'
-import firebaseConfig from './Config.js';
-import 'firebase/auth';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import React from "react";
+import firebase from "firebase/app";
+import "firebase/database";
+import firebaseConfig from "./Config.js";
+import "firebase/auth";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref();
 
-const LogOut = () =>{
-  firebase.auth().signOut()
-}
+const LogOut = () => {
+  firebase.auth().signOut();
+};
 const SignUp = () => (
-  <StyledFirebaseAuth
-    uiConfig={uiConfig}
-    firebaseAuth={firebase.auth()}
-  />
+  <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 );
 
 const uiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID
-  ],
+  signInFlow: "popup",
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   callbacks: {
     signInSuccessWithAuthResult: () => false
   }
@@ -34,9 +29,10 @@ const addItem = (product, carts) => {
   const description = product.description.toString();
   const style = product.style.toString();
   if (item.length > 0) {
-    db.child('carts').child(item[0].id).update({ num: item[0].num + 1 })
-  }
-  else {
+    db.child("carts")
+      .child(item[0].id)
+      .update({ num: item[0].num + 1 });
+  } else {
     const productAttrs = {
       id: id,
       name: name,
@@ -47,19 +43,54 @@ const addItem = (product, carts) => {
       description: description,
       price: product.price
     };
-    db.child('carts').child(id).set(productAttrs)
+    db.child("carts")
+      .child(id)
+      .set(productAttrs)
       .catch(error => alert(error));
   }
-}
+  console.log(carts);
+};
 const deleteItem = item => {
-  db.child('carts').child(item.id).update({ active: false })
-}
+  db.child("carts")
+    .child(item.id)
+    .update({ active: false });
+};
 const updatingItemNumbers = (db, item, incr) => {
-  let updatingNum = Math.max(0, item.num + incr)
+  let updatingNum = Math.max(0, item.num + incr);
   if (updatingNum > 0) {
-    db.child('carts').child(item.id).update({ num: updatingNum })
+    db.child("carts")
+      .child(item.id)
+      .update({ num: updatingNum });
   } else if (updatingNum === 0) {
-    db.child('carts').child(item.id).update({ active: false })
+    db.child("carts")
+      .child(item.id)
+      .update({ active: false });
   }
-}
-export { SignUp, LogOut, uiConfig, db, addItem, deleteItem, updatingItemNumbers }
+};
+
+const checkout = (products, db, items) => {
+  console.log(products);
+  products.map(product => {
+    items.map(item => {
+      if (item.id === product.sku) {
+        let updatingNum = product.inventory - item.num;
+        db.child("products")
+          .child(product.sku)
+          .update({ inventory: updatingNum });
+        db.child("carts")
+          .child(item.id)
+          .update({ active: false });
+      }
+    });
+  });
+};
+export {
+  checkout,
+  SignUp,
+  LogOut,
+  uiConfig,
+  db,
+  addItem,
+  deleteItem,
+  updatingItemNumbers
+};
