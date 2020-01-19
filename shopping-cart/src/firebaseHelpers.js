@@ -55,8 +55,14 @@ const deleteItem = item => {
     .child(item.id)
     .update({ active: false });
 };
-const updatingItemNumbers = (db, item, incr) => {
+const updatingItemNumbers = (products, db, item, incr) => {
   let updatingNum = Math.max(0, item.num + incr);
+  let ivty = products.filter(product => {
+    if (product.sku === item.id) return product;
+  });
+  console.log(ivty[0].inventory);
+  updatingNum =
+    updatingNum > ivty[0].inventory ? ivty[0].inventory : updatingNum;
   if (updatingNum > 0) {
     db.child("carts")
       .child(item.id)
@@ -68,12 +74,12 @@ const updatingItemNumbers = (db, item, incr) => {
   }
 };
 
-const checkout = (products, db, items) => {
+const checkout = (total, products, db, items) => {
   console.log(products);
   products.map(product => {
     items.map(item => {
       if (item.id === product.sku) {
-        let updatingNum = product.inventory - item.num;
+        let updatingNum = Math.max(0, product.inventory - item.num);
         db.child("products")
           .child(product.sku)
           .update({ inventory: updatingNum });
@@ -83,6 +89,7 @@ const checkout = (products, db, items) => {
       }
     });
   });
+  if (total > 0) alert("Thanks for you purchase!");
 };
 export {
   checkout,

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     width: "auto"
   }
 });
-const EachItem = ({ item }) => {
+const EachItem = ({ item, products }) => {
   return (
     <Column.Group backgroundColor="primary">
       <Column size="three-quarters">
@@ -61,10 +61,14 @@ const EachItem = ({ item }) => {
           </List.Item>
           <List.Item>
             <Button.Group>
-              <Button onClick={() => updatingItemNumbers(db, item, -1)}>
+              <Button
+                onClick={() => updatingItemNumbers(products, db, item, -1)}
+              >
                 -
               </Button>
-              <Button onClick={() => updatingItemNumbers(db, item, 1)}>
+              <Button
+                onClick={() => updatingItemNumbers(products, db, item, 1)}
+              >
                 +
               </Button>
             </Button.Group>
@@ -75,13 +79,13 @@ const EachItem = ({ item }) => {
   );
 };
 
-const ItemsInCart = ({ items }) => {
+const ItemsInCart = ({ items, products }) => {
   return (
     <List>
       {items.map(item => {
         return (
           <List.Item>
-            <EachItem item={item}></EachItem>
+            <EachItem item={item} products={products}></EachItem>
           </List.Item>
         );
       })}
@@ -89,7 +93,6 @@ const ItemsInCart = ({ items }) => {
   );
 };
 const Subtotal = ({ products, items, db }) => {
-  console.log(products);
   let total = 0;
   if (items) {
     total = items.map(item => item.price * item.num).reduce((a, b) => a + b, 0);
@@ -102,7 +105,7 @@ const Subtotal = ({ products, items, db }) => {
       </div>
       {total.toFixed(2)}
       <Container>
-        <button onClick={() => checkout(products, db, items)}>
+        <button onClick={() => checkout(total, products, db, items)}>
           check out button
         </button>
       </Container>
@@ -141,7 +144,7 @@ const CartView = ({ items, user, products }) => {
           Cart
         </Button>
         <Divider />
-        <ItemsInCart items={items}></ItemsInCart>
+        <ItemsInCart items={items} products={products} />
         <Divider />
         <Subtotal items={items} products={products} db={db}></Subtotal>
       </Container>

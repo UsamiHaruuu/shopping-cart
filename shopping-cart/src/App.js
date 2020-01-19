@@ -17,7 +17,6 @@ const createItemsList = data => {
   return Object.values(data.products);
 };
 const createCartList = data => {
-  console.log(data.carts);
   return Object.values(data.carts).filter(data => data.active === true);
 };
 const App = () => {
@@ -25,7 +24,6 @@ const App = () => {
   const [carts, setCarts] = useState([]);
   const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
-  console.log(carts);
   firebase.auth().onAuthStateChanged(setUser);
   useEffect(() => {
     firebase.auth().onAuthStateChanged(setUser);
@@ -59,7 +57,6 @@ const App = () => {
       setData(data);
     }
   }, [order, data]);
-  console.log(carts);
   return (
     <React.Fragment>
       <Banner carts={carts} user={user} products={data} />

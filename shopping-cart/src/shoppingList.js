@@ -116,7 +116,6 @@ const useSelection = () => {
           : selected.concat(prop)
       );
   };
-  console.log(selected);
   return [selected, toggle];
 };
 const buttonColor = (size, state) => {
