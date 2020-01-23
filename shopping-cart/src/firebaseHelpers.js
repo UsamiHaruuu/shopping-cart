@@ -13,7 +13,9 @@ const LogOut = () => {
 const SignUp = () => (
   <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 );
-
+const removeDot = str => {
+  return str.split(".").join("");
+};
 const uiConfig = {
   signInFlow: "popup",
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -21,8 +23,26 @@ const uiConfig = {
     signInSuccessWithAuthResult: () => false
   }
 };
-
-const addItem = (product, carts) => {
+/**
+ * carts
+ *      user[user1,user2,user3]
+ *           user1= {items}
+ */
+const createUserCart = (user) => {
+  let dbData;
+  db.once("value", function (data) {
+    dbData = data.val();
+    if (dbData.carts[removeDot(user.email)] === undefined) {
+      db.child("carts")
+        .child(removeDot(user.email))
+        .set({
+          user: user.displayName
+        })
+        .catch(error => alert(error));
+    }
+  });
+}
+const addItem = (user, product, carts) => {
   let item = carts.filter(i => i.id === product.sku);
   const id = product.sku;
   const name = product.title.toString();
@@ -30,6 +50,7 @@ const addItem = (product, carts) => {
   const style = product.style.toString();
   if (item.length > 0) {
     db.child("carts")
+      .child(removeDot(user.email))
       .child(item[0].id)
       .update({ num: item[0].num + 1 });
   } else {
@@ -44,38 +65,39 @@ const addItem = (product, carts) => {
       price: product.price
     };
     db.child("carts")
+      .child(removeDot(user.email))
       .child(id)
       .set(productAttrs)
       .catch(error => alert(error));
   }
-  console.log(carts);
 };
-const deleteItem = item => {
+const deleteItem = (user, item) => {
   db.child("carts")
+    .child(removeDot(user.email))
     .child(item.id)
     .update({ active: false });
 };
-const updatingItemNumbers = (products, db, item, incr) => {
+const updatingItemNumbers = (user, products, db, item, incr) => {
   let updatingNum = Math.max(0, item.num + incr);
   let ivty = products.filter(product => {
     if (product.sku === item.id) return product;
   });
-  console.log(ivty[0].inventory);
   updatingNum =
     updatingNum > ivty[0].inventory ? ivty[0].inventory : updatingNum;
   if (updatingNum > 0) {
     db.child("carts")
+      .child(removeDot(user.email))
       .child(item.id)
       .update({ num: updatingNum });
   } else if (updatingNum === 0) {
     db.child("carts")
+      .child(removeDot(user.email))
       .child(item.id)
       .update({ active: false });
   }
 };
 
 const checkout = (total, products, db, items) => {
-  console.log(products);
   products.map(product => {
     items.map(item => {
       if (item.id === product.sku) {
@@ -99,5 +121,7 @@ export {
   db,
   addItem,
   deleteItem,
-  updatingItemNumbers
+  updatingItemNumbers,
+  removeDot,
+  createUserCart
 };

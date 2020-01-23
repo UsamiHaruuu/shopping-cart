@@ -2,7 +2,7 @@ import React from 'react';
 import "rbx/index.css";
 import { Navbar, Button, Container } from 'rbx';
 import CartView from './CartView'
-import { SignUp, LogOut } from './firebaseHelpers'
+import { SignUp, LogOut, removeDot } from './firebaseHelpers'
 const Banner = ({ carts, user, products }) => {
     return (
         <Container>
@@ -42,11 +42,11 @@ const Banner = ({ carts, user, products }) => {
                                 <Button color="primary">
                                     {user ? <div>Welcome, {user.displayName}
                                         <Button onClick={() => LogOut()}>
-                                           <div> Log Out</div>
+                                            <div> Log Out</div>
                                         </Button></div>
                                         : <SignUp />}
                                 </Button>
-                                <CartView items={carts} user={user} products = {products} ></CartView>
+                                <CartView items={carts} user={user} products={products} ></CartView>
                             </Button.Group>
                         </Navbar.Item>
                     </Navbar.Segment>

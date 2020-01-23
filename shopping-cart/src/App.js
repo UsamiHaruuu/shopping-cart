@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { ShoppingList } from "./shoppingList";
 import Banner from "./Banner";
-import { db } from "./firebaseHelpers";
+import { db, createUserCart, removeDot } from "./firebaseHelpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { Container, Button, Icon, Dropdown } from "rbx";
@@ -16,33 +16,37 @@ https://shopping-cart-43740.firebaseapp.com/
 const createItemsList = data => {
   return Object.values(data.products);
 };
-const createCartList = data => {
-  return Object.values(data.carts).filter(data => data.active === true);
+const createCartList = (data, user) => {
+  if (user !== null)
+    return Object.values(data.carts[removeDot(user.email)])
+      .filter(data => data.active === true);
 };
 const App = () => {
   const [order, setOrder] = useState("Newest to Oldest");
   const [carts, setCarts] = useState([]);
   const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
-  firebase.auth().onAuthStateChanged(setUser);
+  console.log(user)
+  console.log(carts)
   useEffect(() => {
     firebase.auth().onAuthStateChanged(setUser);
-  }, []);
+    if (user !== null)
+      createUserCart(user)
+  }, [user]);
   useEffect(() => {
     const handleData = snap => {
       if (snap.val().products) {
         setData(createItemsList(snap.val()));
       }
-      if (snap.val().carts) {
-        setCarts(createCartList(snap.val()));
+      if (snap.val() && user !== null) {
+        setCarts(createCartList(snap.val(), user));
       }
     };
     db.on("value", handleData, error => alert(error));
     return () => {
       db.off("value", handleData);
     };
-  }, []);
-
+  }, [user]);
   useEffect(() => {
     if (order === "Lowest to Highest") {
       data.sort((a, b) => {
@@ -51,7 +55,7 @@ const App = () => {
       setData(data);
     }
     if (order === "Highest to Lowest") {
-      data.sort(function(a, b) {
+      data.sort(function (a, b) {
         return a.price - b.price;
       });
       setData(data);

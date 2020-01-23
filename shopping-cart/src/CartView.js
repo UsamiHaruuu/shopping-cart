@@ -10,11 +10,14 @@ import {
   checkout,
   db,
   deleteItem,
-  updatingItemNumbers
+  updatingItemNumbers,
+  removeDot
 } from "./firebaseHelpers";
 import { getURL } from "./shoppingList";
 //import MailIcon from '@material-ui/icons/Mail';
 //https://material-ui.com/components/drawers/#swipeable-temporary-drawer
+
+
 const useStyles = makeStyles({
   list: {
     width: "auto"
@@ -23,7 +26,7 @@ const useStyles = makeStyles({
     width: "auto"
   }
 });
-const EachItem = ({ item, products }) => {
+const EachItem = ({ item, products, user }) => {
   return (
     <Column.Group backgroundColor="primary">
       <Column size="three-quarters">
@@ -40,7 +43,7 @@ const EachItem = ({ item, products }) => {
               </Container>
             </Column>
             <Column align="center">
-              <div>Item's Size</div>
+              <div>Price: {item.price.toFixed(2)}</div>
               <div>{item.style}</div>
               <div>
                 {item.description === "" ? "No description" : item.description}
@@ -52,7 +55,7 @@ const EachItem = ({ item, products }) => {
       </Column>
       <Column>
         <List>
-          <List.Item as="button" onClick={() => deleteItem(item)}>
+          <List.Item as="button" onClick={() => deleteItem(user, item)}>
             <FontAwesomeIcon icon={faMinus} />
           </List.Item>
           <List.Item>
@@ -62,12 +65,12 @@ const EachItem = ({ item, products }) => {
           <List.Item>
             <Button.Group>
               <Button
-                onClick={() => updatingItemNumbers(products, db, item, -1)}
+                onClick={() => updatingItemNumbers(user, products, db, item, -1)}
               >
                 -
               </Button>
               <Button
-                onClick={() => updatingItemNumbers(products, db, item, 1)}
+                onClick={() => updatingItemNumbers(user, products, db, item, 1)}
               >
                 +
               </Button>
@@ -79,13 +82,13 @@ const EachItem = ({ item, products }) => {
   );
 };
 
-const ItemsInCart = ({ items, products }) => {
+const ItemsInCart = ({ user, items, products }) => {
   return (
     <List>
       {items.map(item => {
         return (
           <List.Item>
-            <EachItem item={item} products={products}></EachItem>
+            <EachItem item={item} products={products} user={user}></EachItem>
           </List.Item>
         );
       })}
@@ -117,7 +120,6 @@ const CartView = ({ items, user, products }) => {
   const [state, setState] = useState({
     right: false
   });
-
   const toggleDrawer = open => event => {
     if (
       event.type === "keydown" &&
@@ -128,7 +130,7 @@ const CartView = ({ items, user, products }) => {
     setState({ right: open });
   };
 
-  const sideList = (side, items, products, db) => {
+  const sideList = (user, side, items, products, db) => {
     return (
       <Container
         align="center"
@@ -140,11 +142,13 @@ const CartView = ({ items, user, products }) => {
         <Image.Container size={128}>
           <Image src="https://cdn0.iconfinder.com/data/icons/shopping-cart-26/1000/Shopping-Basket-03-512.png" />
         </Image.Container>
-        <Button badge={items.length} as="Content">
+        <Button
+          badge={items.length}
+          as="Content">
           Cart
         </Button>
         <Divider />
-        <ItemsInCart items={items} products={products} />
+        <ItemsInCart user={user} items={items} products={products} />
         <Divider />
         <Subtotal items={items} products={products} db={db}></Subtotal>
       </Container>
@@ -162,7 +166,7 @@ const CartView = ({ items, user, products }) => {
           <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
         </Button>
         <Drawer anchor="right" open={state.right} onClose={toggleDrawer(false)}>
-          {sideList("right", items, products, db)}
+          {sideList(user, "right", items, products, db)}
         </Drawer>
       </div>
     );

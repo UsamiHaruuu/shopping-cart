@@ -60,7 +60,7 @@ const Add = ({ user, product, carts }) => {
         Focused
         size="medium"
         color="dark"
-        onClick={() => addItem(product, carts)}
+        onClick={() => addItem(user, product, carts)}
       >
         Add to Shopping Cart
       </Button>
@@ -85,7 +85,7 @@ const ListOfItem = ({ user, carts, products, n, allsize, selected }) => {
             {product.size.map(size => (
               <Button
                 onClick={() => {
-                  addItem(product, carts);
+                  addItem(user, product, carts);
                 }}
               >
                 {size}
@@ -122,6 +122,7 @@ const buttonColor = (size, state) => {
   return state.selected.includes(size) ? "primary" : null;
 };
 const ShoppingList = ({ user, products, carts }) => {
+  console.log(user)
   const [allsize, setAllsize] = useState([]);
   const [selected, toggle] = useSelection();
   const sizeHelper = size => {
